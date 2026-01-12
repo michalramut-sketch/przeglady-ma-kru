@@ -76,6 +76,25 @@ function showBuildings() {
     </div>
   `;
 }
+//DODAJ KARTĘ BUDYNKU
+function showBuildings() {
+  const content = document.getElementById("content");
+
+  content.innerHTML = `
+    <h2>Lista budynków</h2>
+
+    <div class="building-list">
+      ${BUILDINGS.map(b => `
+        <div class="building-card" onclick="openBuilding(${b.id})">
+          <strong>${b.adres}</strong><br>
+          <small>${b.miasto}</small><br>
+          <small>Zarządca: ${b.zarzadca}</small>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
 //KARTA Budynku
 function showBuilding(id) {
   const b = BUILDINGS.find(x => x.id === id);
@@ -121,6 +140,18 @@ function newInspection(buildingId) {
     <p>⬇️ Formularz pojawi się tutaj</p>
 
     <button onclick="showBuildings()">⬅️ Wróć do listy</button>
+  `;
+}
+//NOWY PRZEGLĄD
+function newInspection(type) {
+  const content = document.getElementById("content");
+
+  content.innerHTML = `
+    <h2>Nowy przegląd: ${type.toUpperCase()}</h2>
+
+    <p>(Tu za chwilę będzie formularz)</p>
+
+    <button onclick="showBuildings()">← Lista budynków</button>
   `;
 }
 
