@@ -1,0 +1,8 @@
+{
+  "name": "MA-KRU Przegl\u0105dy",
+  "short_name": "Przegl\u0105dy",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0057b7"
+}
