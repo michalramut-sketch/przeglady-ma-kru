@@ -1,40 +1,41 @@
-alert("JS DZIAŁA");
-// =======================
-// DANE TESTOWE – BUDYNKI
-// =======================
-const BUILDINGS = [
-  {
-    id: 1,
-    adres: "Armii Krajowej 2",
-    miasto: "Miasto",
-    zarzadca: "TBS"
-  },
-  {
-    id: 2,
-    adres: "Kościuszki 10",
-    miasto: "Miasto",
-    zarzadca: "Wspólnota"
-  }
+console.log("APP JS START");
+
+const buildings = [
+  { id: 1, address: "Armii Krajowej 2", manager: "TBS" },
+  { id: 2, address: "Kościuszki 10", manager: "Wspólnota" }
 ];
 
-// =======================
-// LISTA BUDYNKÓW
-// =======================
 function showBuildings() {
   const content = document.getElementById("content");
-
   content.innerHTML = `
     <h2>Lista budynków</h2>
-    <div class="building-list">
-      ${BUILDINGS.map(b => `
-        <div class="building-card" onclick="showBuilding(${b.id})">
-          <strong>${b.adres}</strong><br>
-          <small>${b.miasto} • ${b.zarzadca}</small>
-        </div>
-      `).join("")}
-    </div>
+    ${buildings.map(b => `
+      <div onclick="openBuilding(${b.id})">
+        <strong>${b.address}</strong><br>
+        <small>${b.manager}</small>
+      </div>
+    `).join("")}
   `;
 }
+
+function openBuilding(id) {
+  const b = buildings.find(x => x.id === id);
+  document.getElementById("content").innerHTML = `
+    <h2>${b.address}</h2>
+    <button onclick="newInspection()">Nowy przegląd</button>
+    <button onclick="showBuildings()">Wróć</button>
+  `;
+}
+
+function newInspection() {
+  document.getElementById("content").innerHTML = `
+    <h2>Nowy przegląd</h2>
+    <p>Formularz wkrótce</p>
+    <button onclick="showBuildings()">Wróć</button>
+  `;
+}
+
+showBuildings();}
 
 // =======================
 // KARTA BUDYNKU
