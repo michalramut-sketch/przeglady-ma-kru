@@ -1,3 +1,4 @@
+alert("JS DZIAŁA");
 console.log("APP START");
 
 const buildings = [
