@@ -94,6 +94,66 @@ function newInspection(type, buildingId) {
 // =======================
 // START APLIKACJI
 // =======================
+showBuildings();// LISTA BUDYNKÓW
+// =======================
+function showBuildings() {
+  content.innerHTML = `
+    <h2>Lista budynków</h2>
+
+    <div class="building-list">
+      ${buildings.map(b => `
+        <div class="building-card" onclick="showBuilding(${b.id})">
+          <strong>${b.address}</strong><br>
+          <small>Zarządca: ${b.manager}</small>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+// =======================
+// KARTA BUDYNKU
+// =======================
+function showBuilding(id) {
+  const b = buildings.find(x => x.id === id);
+  if (!b) return;
+
+  content.innerHTML = `
+    <h2>${b.address}</h2>
+    <p><strong>Zarządca:</strong> ${b.manager}</p>
+
+    <h3>Dostępne przeglądy</h3>
+    <ul>
+      ${b.inspections.budowlany ? `<li><button onclick="newInspection('budowlany', ${b.id})">Budowlany</button></li>` : ""}
+      ${b.inspections.gazowy ? `<li><button onclick="newInspection('gazowy', ${b.id})">Gazowy</button></li>` : ""}
+      ${b.inspections.elektryczny ? `<li><button onclick="newInspection('elektryczny', ${b.id})">Elektryczny</button></li>` : ""}
+      ${b.inspections.ppoz ? `<li><button onclick="newInspection('ppoz', ${b.id})">PPOŻ</button></li>` : ""}
+      ${b.inspections.odgrom ? `<li><button onclick="newInspection('odgrom', ${b.id})">Odgrom</button></li>` : ""}
+    </ul>
+
+    <button onclick="showBuildings()">⬅ Wróć</button>
+  `;
+}
+
+// =======================
+// NOWY PRZEGLĄD (JEDNA FUNKCJA)
+// =======================
+function newInspection(type, buildingId) {
+  const b = buildings.find(x => x.id === buildingId);
+
+  content.innerHTML = `
+    <h2>Nowy przegląd: ${type.toUpperCase()}</h2>
+    <p><strong>Budynek:</strong> ${b.address}</p>
+
+    <p>(tu będzie formularz)</p>
+
+    <button onclick="showBuilding(${buildingId})">⬅ Wróć do budynku</button>
+  `;
+}
+
+// =======================
+// START APLIKACJI
+// =======================
 showBuildings();    <h3>Instalacje</h3>
     <ul>
       <li>Gazowa: ${b.instalacje.gaz ? "TAK" : "NIE"}</li>
