@@ -1,8 +1,8 @@
-console.log("APP JS START");
+console.log("APP START");
 
 const buildings = [
-  { id: 1, address: "Armii Krajowej 2", manager: "TBS" },
-  { id: 2, address: "Kościuszki 10", manager: "Wspólnota" }
+  { id: 1, name: "Armii Krajowej 2" },
+  { id: 2, name: "Kościuszki 10" }
 ];
 
 function showBuildings() {
@@ -10,9 +10,9 @@ function showBuildings() {
   content.innerHTML = `
     <h2>Lista budynków</h2>
     ${buildings.map(b => `
-      <div onclick="openBuilding(${b.id})">
-        <strong>${b.address}</strong><br>
-        <small>${b.manager}</small>
+      <div onclick="openBuilding(${b.id})"
+           style="padding:8px;border:1px solid #000;margin:4px;">
+        ${b.name}
       </div>
     `).join("")}
   `;
@@ -21,7 +21,7 @@ function showBuildings() {
 function openBuilding(id) {
   const b = buildings.find(x => x.id === id);
   document.getElementById("content").innerHTML = `
-    <h2>${b.address}</h2>
+    <h2>${b.name}</h2>
     <button onclick="newInspection()">Nowy przegląd</button>
     <button onclick="showBuildings()">Wróć</button>
   `;
@@ -30,11 +30,10 @@ function openBuilding(id) {
 function newInspection() {
   document.getElementById("content").innerHTML = `
     <h2>Nowy przegląd</h2>
-    <p>Formularz wkrótce</p>
+    <p>Tu będzie formularz</p>
     <button onclick="showBuildings()">Wróć</button>
   `;
 }
-
 showBuildings();}
 
 // =======================
