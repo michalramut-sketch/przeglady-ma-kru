@@ -1,52 +1,34 @@
-alert("JS DZIAŁA");
-
 // =======================
 // DANE TESTOWE – BUDYNKI
 // =======================
-const buildings = [
+const BUILDINGS = [
   {
     id: 1,
-    address: "Armii Krajowej 2",
-    manager: "TBS",
-    inspections: {
-      budowlany: 1,
-      gazowy: 1,
-      elektryczny: 0,
-      ppoz: 1,
-      odgrom: 0
-    }
+    adres: "Armii Krajowej 2",
+    miasto: "Miasto",
+    zarzadca: "TBS"
   },
   {
     id: 2,
-    address: "Kościuszki 10",
-    manager: "Wspólnota",
-    inspections: {
-      budowlany: 1,
-      gazowy: 0,
-      elektryczny: 1,
-      ppoz: 0,
-      odgrom: 1
-    }
+    adres: "Kościuszki 10",
+    miasto: "Miasto",
+    zarzadca: "Wspólnota"
   }
 ];
-
-// =======================
-// GŁÓWNY CONTENT
-// =======================
-const content = document.getElementById("content");
 
 // =======================
 // LISTA BUDYNKÓW
 // =======================
 function showBuildings() {
+  const content = document.getElementById("content");
+
   content.innerHTML = `
     <h2>Lista budynków</h2>
-
     <div class="building-list">
-      ${buildings.map(b => `
+      ${BUILDINGS.map(b => `
         <div class="building-card" onclick="showBuilding(${b.id})">
-          <strong>${b.address}</strong><br>
-          <small>Zarządca: ${b.manager}</small>
+          <strong>${b.adres}</strong><br>
+          <small>${b.miasto} • ${b.zarzadca}</small>
         </div>
       `).join("")}
     </div>
@@ -57,94 +39,39 @@ function showBuildings() {
 // KARTA BUDYNKU
 // =======================
 function showBuilding(id) {
-  const b = buildings.find(x => x.id === id);
+  const b = BUILDINGS.find(x => x.id === id);
   if (!b) return;
 
+  const content = document.getElementById("content");
+
   content.innerHTML = `
-    <h2>${b.address}</h2>
-    <p><strong>Zarządca:</strong> ${b.manager}</p>
+    <h2>${b.adres}</h2>
+    <p>Zarządca: ${b.zarzadca}</p>
 
-    <h3>Dostępne przeglądy</h3>
-    <ul>
-      ${b.inspections.budowlany ? `<li><button onclick="newInspection('budowlany', ${b.id})">Budowlany</button></li>` : ""}
-      ${b.inspections.gazowy ? `<li><button onclick="newInspection('gazowy', ${b.id})">Gazowy</button></li>` : ""}
-      ${b.inspections.elektryczny ? `<li><button onclick="newInspection('elektryczny', ${b.id})">Elektryczny</button></li>` : ""}
-      ${b.inspections.ppoz ? `<li><button onclick="newInspection('ppoz', ${b.id})">PPOŻ</button></li>` : ""}
-      ${b.inspections.odgrom ? `<li><button onclick="newInspection('odgrom', ${b.id})">Odgrom</button></li>` : ""}
-    </ul>
-
-    <button onclick="showBuildings()">⬅ Wróć</button>
+    <button onclick="newInspection()">Nowy przegląd</button>
+    <br><br>
+    <button onclick="showBuildings()">← Wróć</button>
   `;
 }
 
 // =======================
-// NOWY PRZEGLĄD (JEDNA FUNKCJA)
+// NOWY PRZEGLĄD
 // =======================
-function newInspection(type, buildingId) {
-  const b = buildings.find(x => x.id === buildingId);
+function newInspection() {
+  const content = document.getElementById("content");
 
   content.innerHTML = `
-    <h2>Nowy przegląd: ${type.toUpperCase()}</h2>
-    <p><strong>Budynek:</strong> ${b.address}</p>
+    <h2>Nowy przegląd</h2>
+    <p>Formularz pojawi się tutaj</p>
 
-    <p>(tu będzie formularz)</p>
-
-    <button onclick="showBuilding(${buildingId})">⬅ Wróć do budynku</button>
+    <button onclick="showBuildings()">← Lista budynków</button>
   `;
 }
 
 // =======================
-// START APLIKACJI
+// START
 // =======================
-showBuildings();// LISTA BUDYNKÓW
-// =======================
-function showBuildings() {
-  content.innerHTML = `
-    <h2>Lista budynków</h2>
-
-    <div class="building-list">
-      ${buildings.map(b => `
-        <div class="building-card" onclick="showBuilding(${b.id})">
-          <strong>${b.address}</strong><br>
-          <small>Zarządca: ${b.manager}</small>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-// =======================
-// KARTA BUDYNKU
-// =======================
-function showBuilding(id) {
-  const b = buildings.find(x => x.id === id);
-  if (!b) return;
-
-  content.innerHTML = `
-    <h2>${b.address}</h2>
-    <p><strong>Zarządca:</strong> ${b.manager}</p>
-
-    <h3>Dostępne przeglądy</h3>
-    <ul>
-      ${b.inspections.budowlany ? `<li><button onclick="newInspection('budowlany', ${b.id})">Budowlany</button></li>` : ""}
-      ${b.inspections.gazowy ? `<li><button onclick="newInspection('gazowy', ${b.id})">Gazowy</button></li>` : ""}
-      ${b.inspections.elektryczny ? `<li><button onclick="newInspection('elektryczny', ${b.id})">Elektryczny</button></li>` : ""}
-      ${b.inspections.ppoz ? `<li><button onclick="newInspection('ppoz', ${b.id})">PPOŻ</button></li>` : ""}
-      ${b.inspections.odgrom ? `<li><button onclick="newInspection('odgrom', ${b.id})">Odgrom</button></li>` : ""}
-    </ul>
-
-    <button onclick="showBuildings()">⬅ Wróć</button>
-  `;
-}
-
-// =======================
-// NOWY PRZEGLĄD (JEDNA FUNKCJA)
-// =======================
-function newInspection(type, buildingId) {
-  const b = buildings.find(x => x.id === buildingId);
-
-  content.innerHTML = `
-    <h2>Nowy przegląd: ${type.toUpperCase()}</h2>
+document.addEventListener("DOMContentLoaded", showBuildings);    <h2>Nowy przegląd: ${type.toUpperCase()}</h2>
     <p><strong>Budynek:</strong> ${b.address}</p>
 
     <p>(tu będzie formularz)</p>
