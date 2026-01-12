@@ -1,4 +1,3 @@
-
 // =======================
 // DANE TESTOWE – BUDYNKI
 // =======================
@@ -28,14 +27,9 @@ const buildings = [
     }
   }
 ];
-// ================================
-// WIDOKI APLIKACJI (routing ręczny)
-// ================================
-
-
 
 // =======================
-// GŁÓWNY WIDOK
+// GŁÓWNY CONTENT
 // =======================
 const content = document.getElementById("content");
 
@@ -43,77 +37,64 @@ const content = document.getElementById("content");
 // LISTA BUDYNKÓW
 // =======================
 function showBuildings() {
-  const content = document.getElementById("content");
-
   content.innerHTML = `
     <h2>Lista budynków</h2>
 
     <div class="building-list">
-      ${BUILDINGS.map(b => `
-        <div class="building-card" onclick="openBuilding(${b.id})">
-          <strong>${b.adres}</strong><br>
-          <small>${b.miasto}</small><br>
-          <small>Zarządca: ${b.zarzadca}</small>
+      ${buildings.map(b => `
+        <div class="building-card" onclick="showBuilding(${b.id})">
+          <strong>${b.address}</strong><br>
+          <small>Zarządca: ${b.manager}</small>
         </div>
       `).join("")}
     </div>
   `;
 }
 
-//Lista budynków
-function showBuildings() {
-  const content = document.getElementById("content");
-
-  content.innerHTML = `
-    <h2>Lista budynków</h2>
-    <div class="building-list">
-      ${BUILDINGS.map(b => `
-        <div class="building-card" onclick="showBuilding('${b.id}')">
-          <strong>${b.adres}</strong><br>
-          <small>${b.miasto} • ${b.zarzadca}</small>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-//DODAJ KARTĘ BUDYNKU
-function showBuildings() {
-  const content = document.getElementById("content");
-
-  content.innerHTML = `
-    <h2>Lista budynków</h2>
-
-    <div class="building-list">
-      ${BUILDINGS.map(b => `
-        <div class="building-card" onclick="openBuilding(${b.id})">
-          <strong>${b.adres}</strong><br>
-          <small>${b.miasto}</small><br>
-          <small>Zarządca: ${b.zarzadca}</small>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-//KARTA Budynku
+// =======================
+// KARTA BUDYNKU
+// =======================
 function showBuilding(id) {
-  const b = BUILDINGS.find(x => x.id === id);
+  const b = buildings.find(x => x.id === id);
   if (!b) return;
 
-  const content = document.getElementById("content");
-
   content.innerHTML = `
-    <h2>${b.adres}</h2>
-    <p><strong>Zarządca:</strong> ${b.zarzadca}</p>
+    <h2>${b.address}</h2>
+    <p><strong>Zarządca:</strong> ${b.manager}</p>
 
-    <h3>Dane techniczne</h3>
+    <h3>Dostępne przeglądy</h3>
     <ul>
-      <li>Lokale: ${b.lokale}</li>
-      <li>Kondygnacje: ${b.kondygnacje}</li>
-      <li>Klatki schodowe: ${b.klatki}</li>
+      ${b.inspections.budowlany ? `<li><button onclick="newInspection('budowlany', ${b.id})">Budowlany</button></li>` : ""}
+      ${b.inspections.gazowy ? `<li><button onclick="newInspection('gazowy', ${b.id})">Gazowy</button></li>` : ""}
+      ${b.inspections.elektryczny ? `<li><button onclick="newInspection('elektryczny', ${b.id})">Elektryczny</button></li>` : ""}
+      ${b.inspections.ppoz ? `<li><button onclick="newInspection('ppoz', ${b.id})">PPOŻ</button></li>` : ""}
+      ${b.inspections.odgrom ? `<li><button onclick="newInspection('odgrom', ${b.id})">Odgrom</button></li>` : ""}
     </ul>
 
-    <h3>Instalacje</h3>
+    <button onclick="showBuildings()">⬅ Wróć</button>
+  `;
+}
+
+// =======================
+// NOWY PRZEGLĄD (JEDNA FUNKCJA)
+// =======================
+function newInspection(type, buildingId) {
+  const b = buildings.find(x => x.id === buildingId);
+
+  content.innerHTML = `
+    <h2>Nowy przegląd: ${type.toUpperCase()}</h2>
+    <p><strong>Budynek:</strong> ${b.address}</p>
+
+    <p>(tu będzie formularz)</p>
+
+    <button onclick="showBuilding(${buildingId})">⬅ Wróć do budynku</button>
+  `;
+}
+
+// =======================
+// START APLIKACJI
+// =======================
+showBuildings();    <h3>Instalacje</h3>
     <ul>
       <li>Gazowa: ${b.instalacje.gaz ? "TAK" : "NIE"}</li>
       <li>Elektryczna: ${b.instalacje.elektryczna ? "TAK" : "NIE"}</li>
