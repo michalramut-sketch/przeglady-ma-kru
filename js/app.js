@@ -55,6 +55,53 @@ function showBuildings() {
 
   content.innerHTML = html;
 }
+//Lista budynków
+function showBuildings() {
+  const content = document.getElementById("content");
+
+  content.innerHTML = `
+    <h2>Lista budynków</h2>
+    <div class="building-list">
+      ${BUILDINGS.map(b => `
+        <div class="building-card" onclick="showBuilding('${b.id}')">
+          <strong>${b.adres}</strong><br>
+          <small>${b.miasto} • ${b.zarzadca}</small>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+//KARTA Budynku
+function showBuilding(id) {
+  const b = BUILDINGS.find(x => x.id === id);
+  if (!b) return;
+
+  const content = document.getElementById("content");
+
+  content.innerHTML = `
+    <h2>${b.adres}</h2>
+    <p><strong>Zarządca:</strong> ${b.zarzadca}</p>
+
+    <h3>Dane techniczne</h3>
+    <ul>
+      <li>Lokale: ${b.lokale}</li>
+      <li>Kondygnacje: ${b.kondygnacje}</li>
+      <li>Klatki schodowe: ${b.klatki}</li>
+    </ul>
+
+    <h3>Instalacje</h3>
+    <ul>
+      <li>Gazowa: ${b.instalacje.gaz ? "TAK" : "NIE"}</li>
+      <li>Elektryczna: ${b.instalacje.elektryczna ? "TAK" : "NIE"}</li>
+      <li>PPOŻ: ${b.instalacje.ppoz ? "TAK" : "NIE"}</li>
+      <li>Odgromowa: ${b.instalacje.odgrom ? "TAK" : "NIE"}</li>
+    </ul>
+
+    <button onclick="startInspection('${b.id}')">Nowy przegląd</button>
+    <button onclick="showBuildings()">⬅ Wróć</button>
+  `;
+}
+
 
 // =======================
 // NOWY PRZEGLĄD
