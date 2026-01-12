@@ -28,6 +28,11 @@ const buildings = [
     }
   }
 ];
+// ================================
+// WIDOKI APLIKACJI (routing ręczny)
+// ================================
+
+
 
 // =======================
 // GŁÓWNY WIDOK
@@ -38,23 +43,23 @@ const content = document.getElementById("content");
 // LISTA BUDYNKÓW
 // =======================
 function showBuildings() {
-  let html = `<h2>Lista budynków</h2>`;
+  const content = document.getElementById("content");
 
-  buildings.forEach(b => {
-    html += `
-      <div style="border:1px solid #ccc; padding:12px; margin-bottom:10px">
-        <strong>${b.address}</strong><br>
-        Zarządca: ${b.manager}<br><br>
+  content.innerHTML = `
+    <h2>Lista budynków</h2>
 
-        <button onclick="newInspection(${b.id})">
-          ➕ Nowy przegląd
-        </button>
-      </div>
-    `;
-  });
-
-  content.innerHTML = html;
+    <div class="building-list">
+      ${BUILDINGS.map(b => `
+        <div class="building-card" onclick="openBuilding(${b.id})">
+          <strong>${b.adres}</strong><br>
+          <small>${b.miasto}</small><br>
+          <small>Zarządca: ${b.zarzadca}</small>
+        </div>
+      `).join("")}
+    </div>
+  `;
 }
+
 //Lista budynków
 function showBuildings() {
   const content = document.getElementById("content");
