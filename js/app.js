@@ -75,3 +75,4 @@ function newInspection(buildingId) {
 // START
 // =======================
 showBuildings();
+
