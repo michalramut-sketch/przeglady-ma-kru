@@ -1,0 +1,8 @@
+{
+"name":"MA-KRU",
+"short_name":"MA-KRU",
+"start_url":"./",
+"display":"standalone",
+"background_color":"#ffffff",
+"theme_color":"#1f2937"
+}
