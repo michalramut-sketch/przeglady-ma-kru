@@ -1,11 +1,11 @@
-alert("JS DZIAŁA");
+alert("JS DZIAŁA – START");
 
 function showBuildings() {
   document.getElementById("content").innerHTML =
-    "<h2>Lista budynków DZIAŁA</h2>";
+    "<p>Lista budynków – klik działa</p>";
 }
 
 function newInspection() {
   document.getElementById("content").innerHTML =
-    "<h2>Nowy przegląd DZIAŁA</h2>";
+    "<p>Nowy przegląd – klik działa</p>";
 }
