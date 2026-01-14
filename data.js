@@ -1,1 +1,0 @@
-const BUILDINGS=[{id:1,adres:'Armii Krajowej 2',zarzadca:'TBS'}];
