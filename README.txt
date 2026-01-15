@@ -1,1 +1,0 @@
-Etap D – kompletna paczka testowa z plikami app.
