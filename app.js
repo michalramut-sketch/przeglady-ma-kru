@@ -1,0 +1,1 @@
+console.log('MA-KRU – Etap C działa poprawnie');
