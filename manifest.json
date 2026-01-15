@@ -1,0 +1,9 @@
+{
+  "name": "MA-KRU",
+  "short_name": "MA-KRU",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": []
+}
