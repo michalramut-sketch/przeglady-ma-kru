@@ -1,1 +1,0 @@
-Tu zapisywane są przeglądy (localStorage/JSON)
