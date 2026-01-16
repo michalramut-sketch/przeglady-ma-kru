@@ -1,51 +1,35 @@
-let currentFilter = "all";
+const content=document.getElementById("content");
 
-function addTestInspection(type) {
-  addInspection({
-    id: Date.now(),
-    type,
-    building: "Armii Krajowej 2",
-    date: new Date().toISOString().slice(0,10)
-  });
-  renderHistory();
+function showBuildings(){
+ content.innerHTML = BUILDINGS.map(b=>`
+  <div onclick="newInspection(${b.id})">
+   <strong>${b.address}</strong>
+  </div>
+ `).join("");
 }
 
-function deleteInspection(id) {
-  let data = loadInspections().filter(i => i.id !== id);
-  saveInspections(data);
-  renderHistory();
+function newInspection(id){
+ const b = BUILDINGS.find(x=>x.id===id);
+ content.innerHTML = `
+  <h2>Nowy przegląd – ${b.address}</h2>
+  <textarea id="uwagi"></textarea><br>
+  <button onclick="save(${id})">Zapisz</button>
+ `;
 }
 
-function changeDate(id) {
-  const d = prompt("Nowa data YYYY-MM-DD");
-  if (!d) return;
-  const data = loadInspections();
-  const el = data.find(i => i.id === id);
-  if (el) el.date = d;
-  saveInspections(data);
-  renderHistory();
+function save(id){
+ const b = BUILDINGS.find(x=>x.id===id);
+ saveInspection({id, address:b.address, uwagi:document.getElementById("uwagi").value, date:new Date().toISOString()});
+ showHistory();
 }
 
-function setFilter(t) {
-  currentFilter = t;
-  renderHistory();
+function showHistory(){
+ const list = loadInspections();
+ content.innerHTML = list.map((i,idx)=>`
+  <div>
+   ${i.address} – ${i.date}
+  </div>
+ `).join("");
 }
 
-function renderHistory() {
-  const data = loadInspections();
-  const list = currentFilter === "all" ? data : data.filter(i => i.type === currentFilter);
-  const el = document.getElementById("history");
-  if (!list.length) {
-    el.innerHTML = "<p>Brak przeglądów</p>";
-    return;
-  }
-  el.innerHTML = list.map(i => `
-    <div style="border:1px solid #333;padding:8px;margin:6px 0">
-      <strong>${i.type}</strong><br>
-      ${i.building}<br>
-      Data: ${i.date}<br>
-      <button onclick="changeDate(${i.id})">📅</button>
-      <button onclick="deleteInspection(${i.id})">🗑</button>
-    </div>
-  `).join("");
-}
+showBuildings();

@@ -2,28 +2,19 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>MA-KRU – Przeglądy</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MA-KRU – Przeglądy Techniczne</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>MA-KRU – PRZEGLĄDY</h1>
-
-<h2>Nowy przegląd</h2>
-<button onclick="addTestInspection('budowlany')">🏗 Budowlany</button>
-<button onclick="addTestInspection('gazowy')">🔥 Gazowy</button>
-<button onclick="addTestInspection('elektryczny')">⚡ Elektryczny</button>
-
-<h2>Filtr</h2>
-<button onclick="setFilter('all')">Wszystkie</button>
-<button onclick="setFilter('budowlany')">Budowlane</button>
-<button onclick="setFilter('gazowy')">Gazowe</button>
-<button onclick="setFilter('elektryczny')">Elektryczne</button>
-
-<h2>Historia</h2>
-<div id="history"></div>
-
-<script src="db.js"></script>
+<header>MA-KRU – Przeglądy Techniczne</header>
+<main>
+  <button onclick="showBuildings()">Lista budynków</button>
+  <button onclick="showHistory()">Historia przeglądów</button>
+  <div id="content"></div>
+</main>
+<script src="data.js"></script>
+<script src="storage.js"></script>
 <script src="app.js"></script>
-<script>renderHistory();</script>
 </body>
 </html>
