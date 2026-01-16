@@ -1,0 +1,17 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.nav button {
+  margin-right: 10px;
+  padding: 6px 12px;
+}
+
+.building {
+  margin: 6px 0;
+}
