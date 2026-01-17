@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MA-KRU – Przeglądy</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>Przegląd roczny</title>
 </head>
 <body>
-<header>MA-KRU – Przeglądy Techniczne</header>
-<main>
-  <button onclick="showBuildings()">Lista budynków</button>
-  <button onclick="addTestInspection()">Dodaj testowy przegląd</button>
-  <div id="content"></div>
-</main>
-<script src="js/db.js"></script>
-<script src="js/app.js"></script>
+
+<h1>Przegląd roczny</h1>
+
+<h2 id="budynek"></h2>
+
+<script>
+  document.getElementById("budynek").innerText =
+    localStorage.getItem("aktywnyBudynek");
+</script>
+
 </body>
 </html>
