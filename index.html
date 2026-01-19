@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>MA-KRU – Przeglądy Techniczne</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { font-family: Arial, sans-serif; margin:0; background:#f4f6f8; }
+header { background:#1f2937; color:#fff; padding:16px; text-align:center; font-size:20px; }
+main { padding:12px; }
+.grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.tile {
+  background:#fff; padding:20px; border-radius:12px;
+  text-align:center; font-weight:bold; cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+.tile:hover { background:#eef2ff; }
+.hidden { display:none; }
+
+.card { background:#fff; padding:12px; border-radius:10px; margin-bottom:12px; }
+button { padding:8px 12px; margin:4px 0; }
+
+select, textarea, input { width:100%; margin:4px 0; }
+
+.state-btns button {
+  width:48%; margin:2px 1%;
+}
+.pilnosc button {
+  width:22%; margin:2px 1%;
+}
+
+.small { font-size:12px; color:#555; }
+</style>
+</head>
+
+<body>
+
+<header>MA-KRU – Przeglądy Techniczne</header>
+
+<main>
+
+<!-- PANEL -->
+<div id="panel">
+  <div class="grid">
+    <div class="tile" onclick="showBuildings()">🏢 Budynki</div>
+    <div class="tile" onclick="startInspection()">🧱 Budowlany</div>
+    <div class="tile">🔥 Gazowy</div>
+    <div class="tile">⚡ Elektryczny</div>
+    <div class="tile">📦 Inne</div>
+  </div>
+</div>
+
+<!-- LISTA BUDYNKÓW -->
+<div id="buildings" class="hidden">
+  <button onclick="back()">⬅ Wróć</button>
+  <h3>Budynki</h3>
+  <div id="buildingList"></div>
+</div>
+
+<!-- FORMULARZ -->
+<div id="form" class="hidden">
+  <button onclick="back()">⬅ Wróć</button>
+  <h3>Przegląd budowlany</h3>
+  <div id="formContent"></div>
+  <button onclick="saveInspection()">💾 Zapisz przegląd</button>
+</div>
+
+</main>
+
+<script>
+// ===== BAZA BUDYNKÓW =====
+const buildings = [
+  {id:1, address:"Armii Krajowej 2", manager:"TBS"},
+  {id:2, address:"Kościuszki 10", manager:"Wspólnota"}
+];
+
+// ===== 32 POZYCJE =====
+const elements = [
+  "Fundamenty","Ściany nośne","Stropy","Schody","Dach","Pokrycie dachowe",
+  "Rynny","Elewacja","Balkony","Tarasy","Stolarka okienna","Stolarka drzwiowa",
+  "Piwnica","Strych","Klatka schodowa","Posadzki","Tynki","Balustrady",
+  "Izolacje","Odwodnienie","Otoczenie","Estetyka budynku",
+  "Instalacja wodna","Instalacja kanalizacyjna",
+  "CO i CWU","Przejścia instalacyjne",
+  "Ochrona środowiska 1","Ochrona środowiska 2",
+  "Ochrona środowiska 3","Ochrona środowiska 4",
+  "Inne 1","Inne 2"
+];
+
+let currentBuilding = null;
+
+// ===== NAWIGACJA =====
+function hideAll(){
+  panel.style.display="none";
+  buildingsDiv.style.display="none";
+  form.style.display="none";
+}
+const panel = document.getElementById("panel");
+const buildingsDiv = document.getElementById("buildings");
+const form = document.getElementById("form");
+
+function back(){ hideAll(); panel.style.display="block"; }
+
+// ===== BUDYNKI =====
+function showBuildings(){
+  hideAll(); buildingsDiv.style.display="block";
+  const list = document.getElementById("buildingList");
+  list.innerHTML="";
+  buildings.forEach(b=>{
+    list.innerHTML += `
+      <div class="card">
+        <strong>${b.address}</strong><br>
+        <span class="small">Zarządca: ${b.manager}</span><br>
+        <button onclick="selectBuilding(${b.id})">Nowy przegląd</button>
+      </div>`;
+  });
+}
+
+function selectBuilding(id){
+  currentBuilding = buildings.find(b=>b.id===id);
+  startInspection();
+}
+
+// ===== FORMULARZ =====
+function startInspection(){
+  hideAll(); form.style.display="block";
+  const fc = document.getElementById("formContent");
+  fc.innerHTML = `<div class="card">
+    <strong>${currentBuilding.address}</strong><br>
+    <span class="small">Zarządca: ${currentBuilding.manager}</span>
+  </div>`;
+
+  elements.forEach((el,i)=>{
+    fc.innerHTML += `
+    <div class="card">
+      <strong>${el}</strong>
+
+      <div class="state-btns">
+        <button onclick="setState(${i},'dobry')">Dobry</button>
+        <button onclick="setState(${i},'zadowalający')">Zadowalający</button>
+        <button onclick="setState(${i},'średni')">Średni</button>
+        <button onclick="setState(${i},'zły')">Zły</button>
+      </div>
+
+      <div class="pilnosc">
+        <button onclick="setUrg(${i},'I')">I</button>
+        <button onclick="setUrg(${i},'II')">II</button>
+        <button onclick="setUrg(${i},'III')">III</button>
+        <button onclick="setUrg(${i},'IV')">IV</button>
+        <button onclick="setUrg(${i},'')">✖</button>
+      </div>
+
+      <textarea id="desc${i}" placeholder="Opis / uwagi"></textarea>
+      <input type="file" accept="image/*" capture="environment">
+    </div>`;
+  });
+}
+
+const inspection = {};
+
+function setState(i,val){ inspection["state"+i]=val; }
+function setUrg(i,val){ inspection["urg"+i]=val; }
+
+// ===== ZAPIS =====
+function saveInspection(){
+  const data = {
+    building: currentBuilding,
+    date: new Date().toISOString(),
+    inspection
+  };
+  let all = JSON.parse(localStorage.getItem("inspections")||"[]");
+  all.push(data);
+  localStorage.setItem("inspections", JSON.stringify(all));
+  alert("Zapisano przegląd ✔");
+  back();
+}
+</script>
+
+</body>
+</html>
