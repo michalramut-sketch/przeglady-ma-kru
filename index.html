@@ -1,40 +1,122 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<title>MA-KRU – Przeglądy Techniczne</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MA-KRU – Element przeglądu</title>
 
 <style>
-body { font-family: Arial, sans-serif; margin:0; background:#f4f6f8; }
-header { background:#1f2937; color:#fff; padding:16px; text-align:center; font-size:20px; }
-main { padding:12px; }
-.grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-.tile {
-  background:#fff; padding:20px; border-radius:12px;
-  text-align:center; font-weight:bold; cursor:pointer;
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
-}
-.tile:hover { background:#eef2ff; }
-.hidden { display:none; }
-
-.card { background:#fff; padding:12px; border-radius:10px; margin-bottom:12px; }
-button { padding:8px 12px; margin:4px 0; }
-
-select, textarea, input { width:100%; margin:4px 0; }
-
-.state-btns button {
-  width:48%; margin:2px 1%;
-}
-.pilnosc button {
-  width:22%; margin:2px 1%;
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f6f8;
+  margin: 0;
+  padding: 12px;
 }
 
-.small { font-size:12px; color:#555; }
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+h2 {
+  margin: 0 0 10px 0;
+}
+
+.section-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.btn-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+button {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+  background: #eee;
+  font-size: 14px;
+}
+
+button.active {
+  background: #1e88e5;
+  color: white;
+  border-color: #1e88e5;
+}
+
+textarea {
+  width: 100%;
+  min-height: 70px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.file {
+  margin-top: 6px;
+}
+
+.clear {
+  background: #d32f2f;
+  color: white;
+}
 </style>
 </head>
 
 <body>
+
+<div class="card">
+  <h2>Fundamenty</h2>
+
+  <div class="section-title">Stan</div>
+  <div class="btn-row" data-group="stan">
+    <button onclick="setActive(this)">Dobry</button>
+    <button onclick="setActive(this)">Zadowalający</button>
+    <button onclick="setActive(this)">Średni</button>
+    <button onclick="setActive(this)">Zły</button>
+  </div>
+
+  <div class="section-title">Pilność</div>
+  <div class="btn-row" data-group="pilnosc">
+    <button onclick="setActive(this)">I</button>
+    <button onclick="setActive(this)">II</button>
+    <button onclick="setActive(this)">III</button>
+    <button onclick="setActive(this)">IV</button>
+  </div>
+
+  <button class="clear" onclick="clearPilnosc()">❌ Wyczyść pilność</button>
+
+  <div class="section-title" style="margin-top:10px;">Opis / uwagi</div>
+  <textarea placeholder="Wpisz uwagi..."></textarea>
+
+  <div class="file">
+    <input type="file" accept="image/*" />
+  </div>
+</div>
+
+<script>
+function setActive(btn) {
+  const group = btn.parentElement;
+  [...group.children].forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function clearPilnosc() {
+  document.querySelectorAll('[data-group="pilnosc"] button')
+    .forEach(b => b.classList.remove('active'));
+}
+</script>
+
+</body>
+</html><body>
 
 <header>MA-KRU – Przeglądy Techniczne</header>
 
