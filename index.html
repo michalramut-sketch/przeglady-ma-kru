@@ -6,35 +6,136 @@
 <title>MA-KRU – Przeglądy</title>
 
 <style>
-body{
-  font-family: Arial, sans-serif;
-  margin:0;
-  background:#f4f6f8;
-}
-header{
-  background:#1f2937;
-  color:#fff;
-  padding:15px;
-  text-align:center;
-  font-size:20px;
-}
-#content{
-  padding:15px;
+body{font-family:Arial;margin:0;background:#f4f6f8}
+header{background:#1f2937;color:#fff;padding:15px;text-align:center;font-size:20px}
+#content{padding:15px}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px}
+.tile{background:#fff;border-radius:10px;padding:20px;text-align:center;font-weight:bold;box-shadow:0 2px 5px rgba(0,0,0,.1);cursor:pointer}
+
+.card{background:#fff;padding:12px;border-radius:8px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+.section{background:#e5e7eb;padding:10px;margin-top:15px;font-weight:bold;border-radius:6px}
+
+.item{background:#fff;padding:10px;margin-top:8px;border-radius:6px}
+.item select,.item textarea{width:100%;margin-top:5px}
+
+.btn{margin-top:15px;padding:10px;border:none;border-radius:6px;cursor:pointer}
+.btn-main{background:#2563eb;color:#fff}
+.btn-back{background:#9ca3af;color:#fff}
+</style>
+</head>
+
+<body>
+<header>MA-KRU – Przeglądy techniczne</header>
+<div id="content"></div>
+
+<script>
+let buildings = JSON.parse(localStorage.getItem("buildings")) || [
+ {id:1,adres:"Armii Krajowej 2",zarzadca:"TBS",historia:[]},
+ {id:2,adres:"Kościuszki 10",zarzadca:"Wspólnota",historia:[]}
+];
+function saveData(){localStorage.setItem("buildings",JSON.stringify(buildings));}
+
+const elements = [
+ "Fundamenty","Ściany nośne","Stropy","Dach","Elewacja",
+ "Klatki schodowe","Balustrady","Piwnice","Strych","Izolacje",
+ "Stolarka okienna","Stolarka drzwiowa","Posadzki","Schody",
+ "Rynny i rury","Obróbki blacharskie","Wentylacja grawitacyjna",
+ "Instalacja wodna","Instalacja kanalizacyjna",
+ "Instalacja CO","Ciepła woda","Piony instalacyjne",
+ "Pomieszczenia techniczne","Estetyka budynku",
+ "Estetyka otoczenia","Drogi i dojścia","Place",
+ "Zieleń","Ogrodzenie","Mała architektura",
+ "Bezpieczeństwo","Inne"
+];
+
+function showHome(){
+ content.innerHTML=`
+  <div class="tiles">
+   <div class="tile" onclick="showBuildings()">🏢 Budynki</div>
+   <div class="tile" onclick="newInspection()">🏗️ Przegląd budowlany</div>
+  </div>`;
 }
 
-/* kafelki */
-.tiles{
-  display:grid;
-  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-  gap:15px;
+function showBuildings(){
+ content.innerHTML=`<h2>Budynki</h2>`+
+ buildings.map(b=>`
+  <div class="card">
+   <b>${b.adres}</b><br>Zarządca: ${b.zarzadca}<br>
+   Przeglądów: ${b.historia.length}
+  </div>`).join("")+
+ `<button class="btn btn-back" onclick="showHome()">← Wróć</button>`;
 }
-.tile{
-  background:#fff;
-  border-radius:10px;
-  padding:20px;
-  text-align:center;
-  font-weight:bold;
-  box-shadow:0 2px 5px rgba(0,0,0,.1);
+
+function newInspection(){
+ content.innerHTML=`
+ <h2>Nowy przegląd budowlany</h2>
+ <label>Budynek:</label>
+ <select id="buildingSelect">
+ ${buildings.map(b=>`<option value="${b.id}">${b.adres}</option>`).join("")}
+ </select>
+
+ ${renderForm()}
+
+ <button class="btn btn-main" onclick="saveInspection()">Zapisz przegląd</button>
+ <button class="btn btn-back" onclick="showHome()">← Anuluj</button>
+ `;
+}
+
+function renderForm(){
+ let html="";
+ let i=0;
+ elements.forEach(el=>{
+  if(i%5===0) html+=`<div class="section">Sekcja ${Math.floor(i/5)+1}</div>`;
+  html+=`
+  <div class="item">
+   <b>${el}</b>
+   <select id="stan_${i}">
+    <option>dobry</option>
+    <option selected>zadowalający</option>
+    <option>średni</option>
+    <option>zły</option>
+   </select>
+   <select id="pilnosc_${i}">
+    <option value="">– stopień pilności –</option>
+    <option>I</option><option>II</option><option>III</option><option>IV</option>
+   </select>
+   <textarea id="uwagi_${i}" placeholder="Uwagi"></textarea>
+  </div>`;
+  i++;
+ });
+ return html;
+}
+
+function saveInspection(){
+ const id=document.getElementById("buildingSelect").value;
+ const b=buildings.find(x=>x.id==id);
+
+ let pozycje=[];
+ elements.forEach((el,i)=>{
+  pozycje.push({
+   element:el,
+   stan:document.getElementById("stan_"+i).value,
+   pilnosc:document.getElementById("pilnosc_"+i).value,
+   uwagi:document.getElementById("uwagi_"+i).value||"brak"
+  });
+ });
+
+ b.historia.push({
+  data:new Date().toLocaleDateString(),
+  pozycje
+ });
+
+ saveData();
+ alert("Przegląd zapisany");
+ showHome();
+}
+
+showHome();
+</script>
+</body>
+</html>  box-shadow:0 2px 5px rgba(0,0,0,.1);
   cursor:pointer;
 }
 .tile:hover{
