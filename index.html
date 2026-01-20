@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MA-KRU – Przegląd budowlany roczny</title>
+<title>Przegląd budowlany – test zdjęcia</title>
 
 <style>
 body {
@@ -13,6 +13,7 @@ body {
   padding:12px;
 }
 h1,h2 { margin:8px 0; }
+
 .section {
   background:#fff;
   border-radius:8px;
@@ -20,21 +21,112 @@ h1,h2 { margin:8px 0; }
   margin-bottom:12px;
   box-shadow:0 2px 4px rgba(0,0,0,.1);
 }
+
 .element {
   border:1px solid #ddd;
   border-radius:6px;
   padding:10px;
   margin-top:10px;
 }
-label { font-size:13px; }
+
+label {
+  font-size:13px;
+  display:block;
+  margin-top:8px;
+}
+
 select, textarea, input {
   width:100%;
   padding:6px;
   font-size:14px;
   margin-top:4px;
 }
+
+img {
+  max-width:100%;
+  margin-top:8px;
+  border-radius:6px;
+  display:none;
+}
+
 button {
-  padding:10px;
+  width:100%;
+  padding:12px;
+  font-size:16px;
+  border:none;
+  border-radius:8px;
+  background:#1976d2;
+  color:#fff;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Przegląd budowlany</h1>
+
+<div class="section">
+<h2>Budynek</h2>
+<select>
+  <option>Armii Krajowej 2 – TBS</option>
+  <option>Kościuszki 10 – Wspólnota</option>
+</select>
+</div>
+
+<div class="section">
+<h2>Element</h2>
+
+<div class="element">
+<strong>Fundamenty</strong>
+
+<label>Stan</label>
+<select>
+  <option>Zadowalający</option>
+  <option>Dobry</option>
+  <option>Średni</option>
+  <option>Zły</option>
+</select>
+
+<label>Stopień pilności (opcjonalny)</label>
+<select>
+  <option value="">— brak —</option>
+  <option>I</option>
+  <option>II</option>
+  <option>III</option>
+  <option>IV</option>
+</select>
+
+<label>Uwagi</label>
+<textarea rows="2" placeholder="Jeśli brak uwag wpisz: brak zaleceń"></textarea>
+
+<label>Zdjęcie (aparat lub galeria)</label>
+<input type="file" accept="image/*" id="foto" capture="environment">
+<img id="preview">
+
+</div>
+</div>
+
+<button>Zapisz (test)</button>
+
+<script>
+const input = document.getElementById("foto");
+const preview = document.getElementById("preview");
+
+input.addEventListener("change", () => {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    preview.src = e.target.result;
+    preview.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+
+</body>
+</html>  padding:10px;
   font-size:15px;
   border:none;
   border-radius:6px;
