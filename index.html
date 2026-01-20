@@ -1,40 +1,111 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MA-KRU – Element przeglądu</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MA-KRU – Przegląd budowlany roczny</title>
 
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #f5f6f8;
-  margin: 0;
-  padding: 12px;
+  background:#f2f4f6;
+  margin:0;
+  padding:12px;
 }
-
-.card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 14px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+h1,h2 { margin:8px 0; }
+.section {
+  background:#fff;
+  border-radius:8px;
+  padding:12px;
+  margin-bottom:12px;
+  box-shadow:0 2px 4px rgba(0,0,0,.1);
 }
-
-h2 {
-  margin: 0 0 10px 0;
+.element {
+  border:1px solid #ddd;
+  border-radius:6px;
+  padding:10px;
+  margin-top:10px;
 }
-
-.section-title {
-  font-weight: bold;
-  margin-bottom: 8px;
+label { font-size:13px; }
+select, textarea, input {
+  width:100%;
+  padding:6px;
+  font-size:14px;
+  margin-top:4px;
 }
+button {
+  padding:10px;
+  font-size:15px;
+  border:none;
+  border-radius:6px;
+}
+.save { background:#1976d2; color:#fff; }
+.small { font-size:12px; color:#666; }
+</style>
+</head>
 
-.btn-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-bottom: 8px;
+<body>
+
+<h1>Przegląd budowlany – roczny</h1>
+
+<div class="section">
+<h2>1. Budynek</h2>
+<select>
+  <option>Armii Krajowej 2 – TBS</option>
+  <option>Kościuszki 10 – Wspólnota</option>
+</select>
+<p class="small">Adres i zarządca uzupełniają się automatycznie</p>
+</div>
+
+<div class="section">
+<h2>2. Elementy budynku</h2>
+
+<div class="element">
+<strong>Fundamenty</strong><br><br>
+
+<label>Stan</label>
+<select>
+  <option>Zadowalający</option>
+  <option>Dobry</option>
+  <option>Średni</option>
+  <option>Zły</option>
+</select>
+
+<label>Stopień pilności (opcjonalny)</label>
+<select>
+  <option value="">— brak —</option>
+  <option>I</option>
+  <option>II</option>
+  <option>III</option>
+  <option>IV</option>
+</select>
+
+<label>Uwagi</label>
+<textarea rows="2" placeholder="Jeśli brak uwag wpisz: brak zaleceń"></textarea>
+
+<label>Zdjęcie (link do Google Drive)</label>
+<input placeholder="np. https://drive.google.com/...">
+</div>
+
+</div>
+
+<div class="section">
+<h2>3. Wnioski</h2>
+
+<label>Naprawy bezzwłoczne (I–II)</label>
+<textarea rows="2"></textarea>
+
+<label>Pozostałe nieprawidłowości</label>
+<textarea rows="2"></textarea>
+
+<label>Zaległości z poprzedniego roku</label>
+<textarea rows="2"></textarea>
+</div>
+
+<button class="save">Zapisz przegląd</button>
+
+</body>
+</html>  margin-bottom: 8px;
 }
 
 button {
