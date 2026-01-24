@@ -3,38 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MA-KRU – System Przeglądów</title>
+<title>Nowy Przegląd</title>
 <style>
-body{
-  font-family: Arial, sans-serif;
-  margin:0;
-  background:#f2f4f8;
+body{font-family:Arial;margin:0;background:#f1f5f9}
+header{background:#0f172a;color:white;padding:15px;text-align:center;font-size:18px}
+.container{padding:15px}
+select,input,textarea{width:100%;padding:8px;margin:5px 0 10px;border-radius:6px;border:1px solid #ccc}
+.section{background:white;margin:10px 0;padding:12px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.06)}
+.element{padding:8px 0;border-bottom:1px solid #eee}
+.states button,.grades button{margin:2px;padding:5px 8px;border-radius:6px;border:none;cursor:pointer}
+.states button{background:#e2e8f0}
+.states button.active{background:#22c55e;color:white}
+.grades button{background:#e5e7eb}
+.grades button.active{background:#ef4444;color:white}
+.save{background:#16a34a;color:white;padding:12px;border:none;border-radius:8px;width:100%;font-size:16px;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header>Nowy przegląd budowlany</header>
+
+<div class="container">
+
+<label>Budynek</label>
+<select id="buildingSelect"></select>
+
+<label>Zarządca</label>
+<input type="text" id="manager" readonly>
+
+<div class="section">
+<h3>Stan techniczny elementów</h3>
+
+<div id="elements"></div>
+
+</div>
+
+<button class="save" onclick="saveInspection()">💾 Zapisz przegląd</button>
+
+</div>
+
+<script>
+// PRZYKŁADOWA BAZA
+const buildings = [
+  {id:1,name:"Armii Krajowej 2",manager:"TBS"},
+  {id:2,name:"Kościuszki 10",manager:"Wspólnota"}
+];
+
+const elementList = [
+"Ściany zewnętrzne",
+"Dach",
+"Stropy",
+"Balkony",
+"Klatki schodowe",
+"Instalacja gazowa",
+"Instalacja elektryczna"
+];
+
+// WYPEŁNIANIE LISTY BUDYNKÓW
+const select = document.getElementById("buildingSelect");
+buildings.forEach(b=>{
+  const opt=document.createElement("option");
+  opt.value=b.id;
+  opt.textContent=b.name;
+  select.appendChild(opt);
+});
+select.onchange=()=>{
+  const b=buildings.find(x=>x.id==select.value);
+  document.getElementById("manager").value=b.manager;
+};
+select.dispatchEvent(new Event('change'));
+
+// GENEROWANIE ELEMENTÓW
+const elDiv=document.getElementById("elements");
+elementList.forEach((name,i)=>{
+  const div=document.createElement("div");
+  div.className="element";
+  div.innerHTML=`
+  <strong>${name}</strong>
+  <div class="states">
+    Stan:
+    ${["dobry","zadowalający","średni","zły"].map(s=>`<button onclick="setState(this)">${s}</button>`).join("")}
+  </div>
+  <div class="grades">
+    Stopień:
+    ${["I","II","III","IV"].map(g=>`<button onclick="toggleGrade(this)">${g}</button>`).join("")}
+  </div>
+  <textarea placeholder="Uwagi..."></textarea>
+  `;
+  elDiv.appendChild(div);
+});
+
+// STANY
+function setState(btn){
+  btn.parentElement.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
 }
-header{
-  background:#1e293b;
-  color:white;
-  padding:18px;
-  text-align:center;
-  font-size:20px;
-  font-weight:bold;
+
+// STOPNIE
+function toggleGrade(btn){
+  btn.classList.toggle("active");
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:15px;
-  padding:20px;
+
+// ZAPIS
+function saveInspection(){
+  const data={
+    date:new Date().toLocaleDateString(),
+    building:select.options[select.selectedIndex].text,
+    manager:document.getElementById("manager").value,
+    elements:[]
+  };
+
+  document.querySelectorAll(".element").forEach(el=>{
+    const name=el.querySelector("strong").innerText;
+    const state=el.querySelector(".states .active")?.innerText||"zadowalający";
+    const grades=[...el.querySelectorAll(".grades .active")].map(b=>b.innerText);
+    const notes=el.querySelector("textarea").value;
+    data.elements.push({name,state,grades,notes});
+  });
+
+  let history=JSON.parse(localStorage.getItem("inspections")||"[]");
+  history.push(data);
+  localStorage.setItem("inspections",JSON.stringify(history));
+
+  alert("Zapisano przegląd!");
 }
-.card{
-  background:white;
-  border-radius:14px;
-  padding:25px 10px;
-  text-align:center;
-  box-shadow:0 4px 10px rgba(0,0,0,0.08);
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:.2s;
-}
+</script>
+
+</body>
+</html>}
 .card:hover{ transform:scale(1.05); }
 .icon{ font-size:34px; display:block; margin-bottom:8px; }
 footer{
