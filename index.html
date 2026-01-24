@@ -3,38 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nowy Przegląd</title>
+<title>Historia przeglądów</title>
 <style>
 body{font-family:Arial;margin:0;background:#f1f5f9}
 header{background:#0f172a;color:white;padding:15px;text-align:center;font-size:18px}
 .container{padding:15px}
-select,input,textarea{width:100%;padding:8px;margin:5px 0 10px;border-radius:6px;border:1px solid #ccc}
-.section{background:white;margin:10px 0;padding:12px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.06)}
-.element{padding:8px 0;border-bottom:1px solid #eee}
-.states button,.grades button{margin:2px;padding:5px 8px;border-radius:6px;border:none;cursor:pointer}
-.states button{background:#e2e8f0}
-.states button.active{background:#22c55e;color:white}
-.grades button{background:#e5e7eb}
-.grades button.active{background:#ef4444;color:white}
-.save{background:#16a34a;color:white;padding:12px;border:none;border-radius:8px;width:100%;font-size:16px;margin-top:10px}
+.card{background:white;margin:10px 0;padding:12px;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,0.06)}
+button{padding:6px 10px;border:none;border-radius:6px;margin:3px;cursor:pointer}
+.view{background:#2563eb;color:white}
+.delete{background:#dc2626;color:white}
+.back{background:#64748b;color:white;width:100%;padding:10px;margin-top:15px}
+.details{margin-top:10px;padding-top:10px;border-top:1px solid #eee}
+.element{font-size:14px;margin-bottom:6px}
+.state{font-weight:bold}
+.grade{color:#dc2626;font-weight:bold}
 </style>
 </head>
 <body>
 
-<header>Nowy przegląd budowlany</header>
+<header>Historia przeglądów</header>
 
-<div class="container">
+<div class="container" id="history"></div>
 
-<label>Budynek</label>
-<select id="buildingSelect"></select>
+<button class="back" onclick="window.location.href='start.html'">⬅ Powrót do menu</button>
 
-<label>Zarządca</label>
-<input type="text" id="manager" readonly>
+<script>
+let historyData = JSON.parse(localStorage.getItem("inspections") || "[]");
+const container = document.getElementById("history");
 
-<div class="section">
-<h3>Stan techniczny elementów</h3>
+if(historyData.length === 0){
+  container.innerHTML = "<p>Brak zapisanych przeglądów.</p>";
+}
 
-<div id="elements"></div>
+historyData.forEach((item, index) => {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <strong>${item.building}</strong><br>
+    Data: ${item.date}<br>
+    Zarządca: ${item.manager}<br>
+    <button class="view" onclick="toggleDetails(${index})">Podgląd</button>
+    <button class="delete" onclick="deleteInspection(${index})">Usuń</button>
+    <div class="details" id="details-${index}" style="display:none"></div>
+  `;
+
+  container.appendChild(card);
+});
+
+function toggleDetails(i){
+  const box = document.getElementById("details-"+i);
+  if(box.style.display === "none"){
+    box.style.display = "block";
+    showDetails(i);
+  } else {
+    box.style.display = "none";
+  }
+}
+
+function showDetails(i){
+  const data = historyData[i];
+  const box = document.getElementById("details-"+i);
+  box.innerHTML = "";
+
+  data.elements.forEach(el=>{
+    const div = document.createElement("div");
+    div.className="element";
+    div.innerHTML = `
+      <strong>${el.name}</strong><br>
+      Stan: <span class="state">${el.state}</span><br>
+      Stopień: <span class="grade">${el.grades.join(", ") || "-"}</span><br>
+      Uwagi: ${el.notes || "-"}
+      <hr>
+    `;
+    box.appendChild(div);
+  });
+}
+
+function deleteInspection(i){
+  if(confirm("Usunąć ten przegląd?")){
+    historyData.splice(i,1);
+    localStorage.setItem("inspections", JSON.stringify(historyData));
+    location.reload();
+  }
+}
+</script>
+
+</body>
+</html><div id="elements"></div>
 
 </div>
 
